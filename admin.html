@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Store Locators</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+
+        <style>
+            body
+            {
+                font-family: Cambria;
+            }
+            table, td , th {
+                border: 1px solid grey;
+                border-collapse: collapse;
+                padding: 5px;
+            }
+            th{ background-color:green; color:white; font-weight:bold;}
+            .odd {background-color:#D8F6CE}
+
+            .header{
+                background-color:green;
+                color:white;
+                padding:10px;
+                margin-bottom: 10px;
+            }
+            .container
+            {
+                width:80%;
+            }
+
+        </style>
+
+    </head>
+    <body ng-app="PushLocatorApp" ng-controller="contractorsCtrl" data-ng-init="init()">
+        <div class="header"><h3> StoreLocator Admin </h3> </div>
+        <div class="container">
+            <div class="alert alert-danger text-center alert-failure-div" role="alert" style="display: none"><p></p></div>
+            <div class="alert alert-success text-center alert-success-div" role="alert" style="display: none"><p></p></div>
+            <div class="row">
+                <button type="button" class="btn  btn-success" data-toggle="modal" data-target="#myModal" data-ng-click="addContractor(contractor)">Add New contractor</button>
+            </div><br/>
+            <div class="row">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Postcode</th>
+                            <th>Country</th>
+                            <th>Latitude</th>
+                            <th>Longitude</th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tr ng-repeat="location in locations" ng-class-odd="'odd'">
+                        <td>{{ location.name}}</td>
+                        <td>{{ location.address}}</td>
+                        <td >{{ location.postal}}</td>
+                        <td >{{ location.country}}</td>
+                        <td >{{ location.lat}}</td>
+                        <td >{{ location.lng}}</td>
+                        <td ><a href="#" data-ng-click="editContractor(location)" data-toggle="modal" data-target="#myModal" > Edit</a> | <a href="#" data-ng-click="deleteContractor(location)">Delete</a></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+        <!-- Add/Edit Form -->
+        <div class="modal  fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-lg modal-dialog " role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Add a new contractor</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="control-label">Name</label>
+                            <input  name="name" required placeholder="Name" class="form-control" data-ng-model='tempContractor.name'/>
+                            <!--<span class="help-block error" data-ng-show="name.$invalid && name.$dirty">
+                                {{getError(name.$error, 'name')}}
+                            </span>-->
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Address</label>
+                            <input  name="address" required  placeholder="Address" class="form-control" data-ng-model='tempContractor.address'/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Postcode</label>
+                            <input  name="postal" required placeholder="Postcode" class="form-control" data-ng-model='tempContractor.postal'/>
+                        </div>
+                        <div class="form-group hide">
+                            <label class="control-label">Country</label>
+                            <input  name="country" placeholder="AU" value="AU" class="form-control" readonly data-ng-model='tempContractor.country'/>
+                        </div>
+                        <div class="form-group ">
+                            <button type="button" class="btn btn-small btn-success" data-ng-click="getGeoCode()"  >Get the Coordinates (Latitude and Longitude) calculated for the above address and postcode </button>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Latitude</label>
+                            <input  name="lat" id="lat" placeholder="Latitude" class="form-control" data-ng-model='tempContractor.lat'/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Longitude</label>
+                            <input  name="lng" id="lng" placeholder="Longitude" class="form-control" data-ng-model='tempContractor.lng'/>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success btn-save" data-ng-click="saveContractor()"  >Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+        <script src="./assets/js/AngularApp.js"></script>
+        <script src="http://maps.google.com/maps/api/js?region=AU"></script>
+        <script src="assets/js/geocode.min.js"></script>
+
+    </body>
+</html>
